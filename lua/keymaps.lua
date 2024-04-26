@@ -18,6 +18,7 @@ vim.opt.clipboard:append { 'unnamed', 'unnamedplus' }
 
 vim.keymap.set("n", "<leader>e", ":Neotree<CR>")
 vim.keymap.set("n", "<leader>l", ":Lazy<CR>")
+vim.keymap.set("n", "<C-s>", ":w<CR>")
 vim.keymap.set("n", "<leader>n", ":nohlsearch<CR>")
 vim.keymap.set("n", "<leader>tr", ":split term://zsh<CR>:set nonu<CR>") 
 vim.keymap.set("t", "<ESC>", "<C-\\><C-n>")
