@@ -17,6 +17,7 @@ end
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 require("lspconfig").clangd.setup({
+	filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto", "h", "hpp", "tpp", "inl", "ipp" },
 	capabilities = capabilities,
 	on_attach = on_attach,
 	cmd = {
