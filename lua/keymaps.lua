@@ -3,7 +3,7 @@ vim.g.maplocalleader = ' '
 
 vim.o.showmode = true
 vim.o.undofile = true
-vim.o.noexpandtab = true
+vim.o.expandtab = false
 vim.o.hlsearch = true
 vim.o.cursorline = true
 vim.o.autoindent = true
