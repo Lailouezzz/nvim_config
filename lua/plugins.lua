@@ -39,7 +39,8 @@ plugins = {
 		},
 		init = function() vim.g.barbar_auto_setup = false end,
 		opts = {},
-	},{
+	},
+	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		config = function ()
@@ -52,6 +53,21 @@ plugins = {
 				indent = { enable = true },
 			})
 		end
+	},
+	{
+		"Diogo-ss/42-header.nvim",
+		cmd = { "Stdheader" },
+		keys = { "<F1>" },
+		opts = {
+			default_map = true, -- Default mapping <F1> in normal mode.
+			auto_update = true, -- Update header when saving.
+			user = "ale-boud", -- Your user.
+			mail = "ale-boud@student.42lehavre.fr", -- Your mail.
+			-- add other options.
+		},
+		config = function(_, opts)
+			require("42header").setup(opts)
+		end,
 	}
 }
 
