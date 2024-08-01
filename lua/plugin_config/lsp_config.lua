@@ -1,6 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = {"clangd"}
+	ensure_installed = { "clangd", "volar", "tsserver" }
 })
 
 
@@ -30,4 +30,35 @@ require("lspconfig").clangd.setup({
 		"--header-insertion=never",
 	},
 
+})
+
+require("lspconfig").tsserver.setup({
+	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+	init_options = {
+		plugins = {
+			{
+				name = '@vue/typescript-plugin',
+				location = require('mason-registry').get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server',
+				languages = { 'vue' },
+			},
+		},
+	},
+	handlers = {
+		-- Usually gets called after another code action
+		-- https://github.com/jose-elias-alvarez/typescript.nvim/issues/17
+		['_typescript.rename'] = function(_, result)
+			return result
+		end,
+		-- 'Go to definition' workaround
+		-- https://github.com/holoiii/nvim/commit/73a4db74fe463f5064346ba63870557fedd134ad
+		['textDocument/definition'] = function(err, result, ...)
+			result = vim.islist(result) and result[1] or result
+			vim.lsp.handlers['textDocument/definition'](err, result, ...)
+		end,
+	},
+})
+
+require("lspconfig").volar.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
 })

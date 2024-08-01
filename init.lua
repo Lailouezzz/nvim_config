@@ -2,4 +2,4 @@ require("keymaps")
 require("plugins")
 require("plugin_config")
 require("neovide_config")
-
+require("filetype")
