@@ -1,6 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = { "clangd", "volar", "tsserver" }
+	ensure_installed = { "clangd", "volar", "ts_ls" }
 })
 
 
@@ -32,7 +32,7 @@ require("lspconfig").clangd.setup({
 
 })
 
-require("lspconfig").tsserver.setup({
+require("lspconfig").ts_ls.setup({
 	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
 	init_options = {
 		plugins = {
