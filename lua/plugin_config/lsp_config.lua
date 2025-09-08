@@ -2,6 +2,7 @@ require("mason").setup()
 require("mason-lspconfig").setup({
 	ensure_installed = { "clangd", "vue_ls", "ts_ls" }
 })
+local lspconfig = require("lspconfig")
 
 
 local on_attach = function (_, _)
@@ -25,14 +26,10 @@ require("lspconfig").clangd.setup({
 		"--background-index",
 		"--clang-tidy",
 		"--completion-style=detailed",
-		"--function-arg-placeholders",
-		"--fallback-style=llvm",
 		"--header-insertion=never",
 	},
-
+	root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git")
 })
-
-print(vim.fn.exepath("vue-language-server"))
 
 require("lspconfig").ts_ls.setup({
 	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
@@ -58,9 +55,4 @@ require("lspconfig").ts_ls.setup({
 			vim.lsp.handlers['textDocument/definition'](err, result, ...)
 		end,
 	},
-})
-
-require("lspconfig").volar.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
 })

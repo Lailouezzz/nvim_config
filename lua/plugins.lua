@@ -1,4 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
@@ -13,6 +14,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 plugins = {
+	{
+	    'windwp/nvim-autopairs',
+	    event = "InsertEnter",
+	    config = true
+	    -- use opts = {} for passing setup options
+	    -- this is equivalent to setup({}) function
+	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
