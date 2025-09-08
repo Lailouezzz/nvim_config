@@ -25,9 +25,14 @@ plugins = {
 	},
 	"nvim-tree/nvim-web-devicons",
 	{ "ellisonleao/gruvbox.nvim", priority = 1000 },
-	"neovim/nvim-lspconfig",
-	"williamboman/mason.nvim",
-	"williamboman/mason-lspconfig.nvim",
+	{
+		"mason-org/mason-lspconfig.nvim",
+		opts = {},
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = {} },
+			"neovim/nvim-lspconfig",
+		}
+	},
 	"hrsh7th/nvim-cmp",
 	"hrsh7th/cmp-nvim-lsp",
 	"L3MON4D3/LuaSnip",

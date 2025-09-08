@@ -1,6 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = { "clangd", "volar", "ts_ls" }
+	ensure_installed = { "clangd", "vue_ls", "ts_ls" }
 })
 
 
@@ -32,13 +32,15 @@ require("lspconfig").clangd.setup({
 
 })
 
+print(vim.fn.exepath("vue-language-server"))
+
 require("lspconfig").ts_ls.setup({
 	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
 	init_options = {
 		plugins = {
 			{
 				name = '@vue/typescript-plugin',
-				location = require('mason-registry').get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server',
+				location = vim.fn.exepath("vue-language-server"),
 				languages = { 'vue' },
 			},
 		},
