@@ -32,7 +32,7 @@ plugins = {
 		}
 	},
 	"nvim-tree/nvim-web-devicons",
-	{ "nvim-telescope/telescope.nvim", dependencies = { "tsakirist/telescope-lazy.nvim", "nvim-telescope/telescope-fzf-native.nvim" } },
+	{ "nvim-telescope/telescope.nvim", dependencies = { "tsakirist/telescope-lazy.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } } },
 	{ "ellisonleao/gruvbox.nvim", priority = 1000 },
 	{
 		"mason-org/mason-lspconfig.nvim",
