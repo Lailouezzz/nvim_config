@@ -14,6 +14,27 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 plugins = {
+	{
+		"sindrets/diffview.nvim",
+		dependencies = { { "nvim-tree/nvim-web-devicons", lazy = true } },
+		keys = {
+			{
+				"dv",
+				function()
+					if next(require("diffview.lib").views) == nil then
+						vim.cmd("DiffviewOpen")
+					else
+						vim.cmd("DiffviewClose")
+					end
+				end,
+				desc = "Toggle Diffview window",
+			},
+		},
+		config = function()
+			require("diffview").setup()
+		end,
+	},
+	{'akinsho/git-conflict.nvim', version = "*", config = true},
 	{ "lewis6991/gitsigns.nvim" },
 	{
 		"jiaoshijie/undotree",

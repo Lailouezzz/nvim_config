@@ -8,6 +8,16 @@ vim.opt.undodir = undodir
 
 vim.opt.undolevels = 1000
 
+vim.opt.list = true
+
+vim.opt.listchars = {
+	tab = "→ ",
+	space = "·",
+	trail = "·",
+	precedes = "«",
+	extends = "»",
+}
+
 require("plugins")
 require("plugin_config")
 require("keymaps")
