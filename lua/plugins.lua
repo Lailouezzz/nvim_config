@@ -14,12 +14,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 plugins = {
+	{ "lewis6991/gitsigns.nvim" },
 	{
-	    'windwp/nvim-autopairs',
-	    event = "InsertEnter",
-	    config = true
-	    -- use opts = {} for passing setup options
-	    -- this is equivalent to setup({}) function
+		'windwp/nvim-autopairs',
+		event = "InsertEnter",
+		config = true
+		-- use opts = {} for passing setup options
+		-- this is equivalent to setup({}) function
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
