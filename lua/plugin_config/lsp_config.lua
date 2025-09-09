@@ -1,6 +1,7 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = { "clangd", "vue_ls", "ts_ls" }
+	ensure_installed = { "clangd", "vue_ls", "ts_ls" },
+	automatic_enable = false,
 })
 local lspconfig = require("lspconfig")
 
