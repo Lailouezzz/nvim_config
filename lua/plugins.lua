@@ -16,11 +16,19 @@ vim.opt.rtp:prepend(lazypath)
 plugins = {
 	{ "lewis6991/gitsigns.nvim" },
 	{
+		"jiaoshijie/undotree",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		---@module 'undotree.collector'
+		---@type UndoTreeCollector.Opts
+		opts = {},
+		keys = { -- load the plugin only when using it's keybinding:
+			{ "UU", "<cmd>lua require('undotree').toggle()<cr>" },
+		},
+	},
+	{
 		'windwp/nvim-autopairs',
 		event = "InsertEnter",
 		config = true
-		-- use opts = {} for passing setup options
-		-- this is equivalent to setup({}) function
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
