@@ -35,7 +35,6 @@ plugins = {
 	{ "ellisonleao/gruvbox.nvim", priority = 1000 },
 	{
 		"mason-org/mason-lspconfig.nvim",
-		opts = {},
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },
 			"neovim/nvim-lspconfig",
