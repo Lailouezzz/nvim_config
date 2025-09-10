@@ -17,13 +17,15 @@ vim.opt.softtabstop = 4
 vim.opt.clipboard:append { 'unnamed', 'unnamedplus' }
 
 local telescope = require("telescope.builtin")
+local opts = { noremap=true, silent=true }
 vim.keymap.set("n", "<leader>e", ":Neotree<CR>")
 vim.keymap.set("n", "<leader>l", ":Lazy<CR>")
 vim.keymap.set("n", "<C-s>", ":w<CR>")
 vim.keymap.set("n", "<leader>n", ":nohlsearch<CR>")
-vim.keymap.set("n", "<leader>tr", ":split term://zsh<CR>:set nonu<CR>") 
+vim.keymap.set("n", "<leader>tr", ":botright split term://zsh<CR>:resize 15<CR>:set nonu<CR>") 
 vim.keymap.set("t", "<ESC>", "<C-\\><C-n>")
-vim.keymap.set("i", "<C-BS>", "<C-w>", { noremap=true, silent=true })
+vim.keymap.set("i", "<C-BS>", "<C-w>", opts)
+vim.keymap.set("i", "<C-v>", "<C-o>P", opts)
 vim.keymap.set("n", "<leader>ff", telescope.find_files, { desc = "Trouver un fichier" })
 vim.keymap.set("n", "<leader>fg", telescope.live_grep, { desc = "Recherche de texte en direct" })
 vim.keymap.set("n", "<leader>fb", telescope.buffers, { desc = "Basculer entre les buffers" })
