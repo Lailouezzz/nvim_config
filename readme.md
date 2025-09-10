@@ -222,31 +222,6 @@ UU           : Toggle undotree (via plugin key)
 
 ---
 
-## Suggested useful mappings (optional — add to keymaps.lua if desired)
-
-```lua
--- delete previous word in insert (works in many terminals)
-vim.keymap.set("i", "<C-BS>", "<C-w>", { noremap=true, silent=true })
-
--- delete next word (like Ctrl+Del)
-vim.keymap.set("i", "<C-Del>", "<C-o>dw", { noremap=true, silent=true })
-vim.keymap.set("n", "<C-Del>", "dw", { noremap=true, silent=true })
-
--- close buffer (alternative)
-vim.keymap.set("n", "<leader>q", ":bd<CR>", { noremap=true, silent=true })
-
--- toggle relative numbers
-vim.keymap.set("n", "<leader>rn", ":set relativenumber!<CR>", { noremap=true, silent=true })
-
--- format buffer (LSP)
-vim.keymap.set("n", "<leader>fm", function() vim.lsp.buf.format{ async = true } end, { desc = "Format buffer" })
-
--- which-key style helper (install which-key.nvim)
--- require("which-key").register({ ["<leader>f"] = { name = "Find" } })
-```
-
----
-
 ## Notes
 
 * Many mappings are provided by plugins (Barbar, Neo-tree, Gitsigns, Telescope). Change mappings by editing the matching `./lua/plugin_config/*.lua` or `./lua/keymaps.lua`.
