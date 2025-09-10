@@ -15,6 +15,13 @@ vim.opt.rtp:prepend(lazypath)
 
 plugins = {
 	{
+		"kylechui/nvim-surround",
+		version = "*", -- use latest stable
+		config = function()
+			require("nvim-surround").setup({})
+		end,
+	},
+	{
 		"iamcco/markdown-preview.nvim",
 		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
 		build = function()
