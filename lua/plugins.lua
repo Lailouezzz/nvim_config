@@ -15,6 +15,19 @@ vim.opt.rtp:prepend(lazypath)
 
 plugins = {
 	{
+		"danymat/neogen", 
+		dependencies = "nvim-treesitter/nvim-treesitter", 
+		config = true,
+		version = "*" 
+	},
+	{
+		"danymat/neogen",
+		config = function()
+			require("neogen").setup()
+		end,
+		cmd = "Neogen",
+	},
+	{
 		"kylechui/nvim-surround",
 		version = "*", -- use latest stable
 		config = function()
