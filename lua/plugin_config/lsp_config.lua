@@ -1,6 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = { "clangd", "vue_ls", "ts_ls" },
+	ensure_installed = { "clangd" },
 	automatic_enable = false,
 })
 local lspconfig = require("lspconfig")
@@ -32,30 +32,4 @@ require("lspconfig").clangd.setup({
 		"--header-insertion=never",
 	},
 	root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git")
-})
-
-require("lspconfig").ts_ls.setup({
-	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-	init_options = {
-		plugins = {
-			{
-				name = '@vue/typescript-plugin',
-				location = vim.fn.exepath("vue-language-server"),
-				languages = { 'vue' },
-			},
-		},
-	},
-	handlers = {
-		-- Usually gets called after another code action
-		-- https://github.com/jose-elias-alvarez/typescript.nvim/issues/17
-		['_typescript.rename'] = function(_, result)
-			return result
-		end,
-		-- 'Go to definition' workaround
-		-- https://github.com/holoiii/nvim/commit/73a4db74fe463f5064346ba63870557fedd134ad
-		['textDocument/definition'] = function(err, result, ...)
-			result = vim.islist(result) and result[1] or result
-			vim.lsp.handlers['textDocument/definition'](err, result, ...)
-		end,
-	},
 })
