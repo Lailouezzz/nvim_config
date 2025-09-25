@@ -20,7 +20,7 @@ end
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-require("lspconfig").clangd.setup({
+vim.lsp.config("clangd", {
 	filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto", "h", "hpp", "tpp", "inl", "ipp" },
 	capabilities = capabilities,
 	on_attach = on_attach,
@@ -31,5 +31,5 @@ require("lspconfig").clangd.setup({
 		"--completion-style=detailed",
 		"--header-insertion=never",
 	},
-	root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git")
 })
+vim.lsp.enable("clangd")
