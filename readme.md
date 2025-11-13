@@ -32,6 +32,14 @@
 <leader>tr   : Toggle bottom terminal split (15 lines, persistent buffer)
 <leader>dg   : Neogen (generate documentation)
 
+Make commands (execute in floating window with auto-close on success):
+  <leader>mm : Run 'make' (auto-closes on success, Esc to close on error)
+  <leader>mf : Run 'make fclean'
+  <leader>mr : Run 'make re'
+  <leader>mp : Run 'make mrproper'
+  <leader>mc : Run './configure.sh'
+  <C-c>      : Cancel running make command (in make window)
+
 Terminal mode:
   <ESC>      : Exit terminal mode / close floating terminal
   <C-S-v>    : <C-\><C-n>pi (paste in terminal)
@@ -256,6 +264,7 @@ K             : hover (vim.lsp.buf.hover)
 ```
 <leader>de   : Evaluate expression under cursor (normal/visual mode)
 <leader>dh   : Hover variables (float scopes window)
+<leader>dw   : Open watches window (float)
 <leader>dv   : View variables (Telescope)
 <leader>df   : View stack frames (Telescope)
 <leader>ds   : Debug commands (Telescope)
