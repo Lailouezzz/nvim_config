@@ -268,6 +268,10 @@ require("neo-tree").setup({
 	},
 })
 
+vim.keymap.set('n', '<leader>gS', function()
+	vim.cmd("Neotree float git_status")
+end, { desc = "NeoTree Git status" })
+
 vim.keymap.set("n", "<C-w>=", function()
 	vim.cmd("wincmd =")
 	require("utils").resize_fixed()
