@@ -148,7 +148,8 @@ plugins = {
 	{ import = "plugins.mason" },
 	{ import = "plugins.dap" },
 	{ import = "plugins.dap-ui" },
-	{ import = "plugins.dap-extras" }
+	{ import = "plugins.dap-extras" },
+	{ import = "plugins.lsp-lens" }
 }
 
 opts = {}

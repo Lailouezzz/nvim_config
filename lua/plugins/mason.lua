@@ -43,6 +43,7 @@ return {
 				ensure_installed = {
 					'python',			-- debugpy
 					'codelldb',			-- C, C++, Rust
+					'cppdbg',			-- Microsoft C, C++
 					'coreclr',			-- .NET (C#, F#)
 					'delve',			-- Go
 				},

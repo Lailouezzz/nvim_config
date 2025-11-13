@@ -79,12 +79,15 @@ function M.exec_command(cmd)
 		on_exit = function(_, exit_code, _)
 			if exit_code == 0 then
 				vim.defer_fn(close_and_delete, 500)
+				vim.api.nvim_win_set_option(win, 'winhl', 'FloatBorder:DiagnosticOk')
 			else
 				vim.notify("Build failed (exit code: " .. exit_code .. ")", vim.log.levels.ERROR)
 				vim.keymap.set('n', '<Esc>', close_and_delete, { buffer = buf, silent = true })
+				vim.api.nvim_win_set_option(win, 'winhl', 'FloatBorder:DiagnosticError')
 			end
 		end
 	})
+	vim.api.nvim_win_set_option(win, 'winhl', 'FloatBorder:DiagnosticWarn')
 	vim.keymap.set('n', '<C-c>', function()
 		if is_job_running(job_id) then
 			vim.fn.chansend(job_id, '\x03')

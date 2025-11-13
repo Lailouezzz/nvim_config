@@ -14,6 +14,7 @@ vim.keymap.set("n", "<leader>mr", function() require("utils").exec_command("make
 vim.keymap.set("n", "<leader>mp", function() require("utils").exec_command("make mrproper") end, opts)
 vim.keymap.set("n", "<leader>mc", function() require("utils").exec_command("./configure.sh") end, opts)
 vim.keymap.set("t", "<C-S-v>", "<C-\\><C-n>pi")
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 vim.keymap.set("i", "<C-BS>", "<C-w>", opts)
 vim.keymap.set("i", "<C-v>", "<C-o>P", opts)
 vim.keymap.set("n", "<leader>dg", ":Neogen<CR>", opts)
