@@ -67,6 +67,7 @@ return {
 			{ '<leader>du', function() require('dapui').toggle() end, desc = 'Debug: Toggle UI' },
 			{ '<leader>de', function() require('dapui').eval() end, mode = {'n', 'v'}, desc = 'Debug: Evaluate' },
 			{ '<leader>dh', function() require('dapui').float_element('scopes', { enter = true }) end, desc = 'Debug: Hover Variables' },
+			{ '<leader>dw', function() require('dapui').float_element('watches', { enter = true }) end, desc = 'Debug: Open Watches' },
 		},
 	},
 }
