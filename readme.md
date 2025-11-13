@@ -27,8 +27,16 @@
 <leader>l    : Open Lazy (plugin manager)
 <C-s>        : :w (save)
 <leader>n    : :nohlsearch (clear search highlights)
-<leader>tr   : :split term://zsh<CR> :set nonu<CR>  (open zsh in split)
-(t-mode) <ESC>: <C-\><C-n>  (exit terminal mode)
+<leader>tr   : :botright split term://zsh<CR>:resize 15<CR>:set nonu<CR> (open zsh in bottom split, 15 lines)
+<leader>dg   : Neogen (generate documentation)
+
+Terminal mode:
+  <ESC>      : <C-\><C-n> (exit terminal mode)
+  <C-S-v>    : <C-\><C-n>pi (paste in terminal)
+
+Insert mode:
+  <C-BS>     : <C-w> (delete previous word)
+  <C-v>      : <C-o>P (paste)
 ```
 
 ---
@@ -218,7 +226,48 @@ dv           : Toggle Diffview (open/close) [plugin key in plugins.lua]
 UU           : Toggle undotree (via plugin key)
 <leader>cp   : MarkdownPreviewToggle (markdown-preview.nvim — lazy-loaded)
 <F1>         : Stdheader (42-header.nvim command)
+<leader>dg   : Neogen (generate documentation for functions/classes)
+
+nvim-surround (text object manipulation):
+  ys{motion}{char} : Add surrounding (e.g., ysiw" adds quotes around word)
+  ds{char}         : Delete surrounding (e.g., ds" removes quotes)
+  cs{old}{new}     : Change surrounding (e.g., cs"' changes " to ')
+
+nvim-autopairs:
+  Auto-closes (, [, {, ", ', etc. when typing
+
+git-conflict.nvim:
+  Automatically loaded for conflict resolution in Git merge conflicts
 ```
+
+---
+
+## Configuration Details
+
+### General Vim Settings
+
+```lua
+Leader key          : <Space>
+Tab settings        : tabstop=4, shiftwidth=4, softtabstop=4
+Line numbers        : enabled (nu)
+Cursor line         : enabled (cursorline)
+Undo persistence    : enabled (undofile with 1000 levels)
+Clipboard           : synced with system (unnamed + unnamedplus)
+Search highlighting : enabled (hlsearch)
+Auto-indent         : enabled
+Expand tabs         : disabled (uses real tabs)
+Whitespace display  : visible (tab=→, space=·, trail=·)
+```
+
+### LSP Configuration
+
+- **Server**: clangd (auto-installed via Mason)
+- **Filetypes**: c, cpp, objc, objcpp, cuda, proto, h, hpp, tpp, inl, ipp
+- **Features**: background-index, clang-tidy, detailed completion style
+
+### Treesitter Languages
+
+Ensured installed: c, lua, vim, vimdoc, query, elixir, heex, javascript, html, markdown
 
 ---
 
@@ -226,3 +275,10 @@ UU           : Toggle undotree (via plugin key)
 
 * Many mappings are provided by plugins (Barbar, Neo-tree, Gitsigns, Telescope). Change mappings by editing the matching `./lua/plugin_config/*.lua` or `./lua/keymaps.lua`.
 * This README is a concise reference of **configured** mappings plus a few recommended helpers you may want to enable.
+* Configuration files structure:
+  - `init.lua` : Main entry point
+  - `lua/plugins.lua` : Plugin declarations (Lazy.nvim)
+  - `lua/keymaps.lua` : General keybindings
+  - `lua/plugin_config/` : Individual plugin configurations
+  - `lua/snippets/` : Custom LuaSnip snippets
+  - `lua/neovide_config.lua` : Neovide GUI-specific settings

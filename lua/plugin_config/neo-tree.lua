@@ -91,7 +91,7 @@ require("neo-tree").setup({
 	commands = {},
 	window = {
 		position = "left",
-		width = 40,
+		width = 30,
 		mapping_options = {
 			noremap = true,
 			nowait = true,
@@ -265,6 +265,11 @@ require("neo-tree").setup({
 				["ot"] = { "order_by_type", nowait = false },
 			}
 		}
-	}
+	},
 })
 
+vim.keymap.set("n", "<C-w>=", function()
+	vim.cmd("wincmd =")
+	require("utils").resize_fixed()
+	require("bufresize").register()
+end)

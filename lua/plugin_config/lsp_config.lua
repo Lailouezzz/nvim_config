@@ -1,8 +1,3 @@
-require("mason").setup()
-require("mason-lspconfig").setup({
-	ensure_installed = { "clangd" },
-	automatic_enable = false,
-})
 local lspconfig = require("lspconfig")
 
 local telescope = require("telescope.builtin")

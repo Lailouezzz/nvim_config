@@ -103,13 +103,6 @@ plugins = {
 	"nvim-tree/nvim-web-devicons",
 	{ "nvim-telescope/telescope.nvim", dependencies = { "tsakirist/telescope-lazy.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } } },
 	{ "ellisonleao/gruvbox.nvim", priority = 1000 },
-	{
-		"mason-org/mason-lspconfig.nvim",
-		dependencies = {
-			{ "mason-org/mason.nvim", opts = {} },
-			"neovim/nvim-lspconfig",
-		}
-	},
 	"hrsh7th/nvim-cmp",
 	"hrsh7th/cmp-nvim-lsp",
 	"L3MON4D3/LuaSnip",
@@ -150,7 +143,12 @@ plugins = {
 		config = function(_, opts)
 			require("42header").setup(opts)
 		end,
-	}
+	},
+	{ import = "plugins.bufresize" },
+	{ import = "plugins.mason" },
+	{ import = "plugins.dap" },
+	{ import = "plugins.dap-ui" },
+	{ import = "plugins.dap-extras" }
 }
 
 opts = {}
