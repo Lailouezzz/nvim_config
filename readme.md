@@ -74,6 +74,12 @@ n  <leader>bw-> :BufferOrderByWindowNumber
 
 ## Neo-tree — file explorer
 
+### Global mappings
+
+```
+<leader>gS    : Open Git status window (float)
+```
+
 ### Window / main mappings
 
 ```
@@ -201,6 +207,10 @@ K             : hover (vim.lsp.buf.hover)
 <leader>E     : diagnostics float (vim.diagnostic.open_float)
 ```
 
+### LSP Lens (lsp-lens.nvim)
+
+Displays inline code lenses (references, implementations) above functions and symbols automatically.
+
 ---
 
 ## Completions — nvim-cmp (insert/select mode)
@@ -275,6 +285,7 @@ K             : hover (vim.lsp.buf.hover)
 
 - **Python**: debugpy
 - **C/C++/Rust**: codelldb
+- **C/C++ (Microsoft)**: cppdbg
 - **.NET (C#/F#)**: coreclr (netcoredbg)
 - **Go**: delve
 
