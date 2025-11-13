@@ -15,8 +15,9 @@
 6. [LSP — useful commands](#lsp---useful-commands)
 7. [Completions (nvim-cmp)](#completions-nvim-cmp)
 8. [Neovide (GUI) — controls](#neovide-gui---controls)
-9. [Other plugin / helper shortcuts](#other-plugin--helper-shortcuts)
-10. [Suggested useful mappings (optional)](#suggested-useful-mappings-optional)
+9. [DAP — Debugging](#dap---debugging-nvim-dap)
+10. [Window Resize](#window-resize-bufresize-nvim)
+11. [Other plugin / helper shortcuts](#other-plugin--helper-shortcuts)
 
 ---
 
@@ -27,11 +28,12 @@
 <leader>l    : Open Lazy (plugin manager)
 <C-s>        : :w (save)
 <leader>n    : :nohlsearch (clear search highlights)
-<leader>tr   : :botright split term://zsh<CR>:resize 15<CR>:set nonu<CR> (open zsh in bottom split, 15 lines)
+<leader>tt   : Toggle floating terminal (custom terminal with Esc to close)
+<leader>tr   : Toggle bottom terminal split (15 lines, persistent buffer)
 <leader>dg   : Neogen (generate documentation)
 
 Terminal mode:
-  <ESC>      : <C-\><C-n> (exit terminal mode)
+  <ESC>      : Exit terminal mode / close floating terminal
   <C-S-v>    : <C-\><C-n>pi (paste in terminal)
 
 Insert mode:
@@ -215,6 +217,70 @@ K             : hover (vim.lsp.buf.hover)
 <leader>f-   : decrease font size (-2)
 <leader>o+   : increase opacity (+0.05)
 <leader>o-   : decrease opacity (-0.05)
+```
+
+---
+
+## DAP — Debugging (nvim-dap)
+
+### Basic Debug Controls
+
+```
+<F5>         : Start/Continue debugging
+<F10>        : Step Over
+<F11>        : Step Into
+<F12>        : Step Out
+```
+
+### Breakpoint Management
+
+```
+<leader>db   : Toggle breakpoint at current line
+<leader>dB   : Set conditional breakpoint (prompts for condition)
+<leader>dc   : Clear all breakpoints
+<leader>dL   : List all breakpoints (Telescope)
+```
+
+### Debug UI & Sessions
+
+```
+<leader>du   : Toggle DAP UI (side panels + REPL)
+<leader>dr   : Open REPL console
+<leader>dl   : Run last debug configuration
+<leader>dt   : Terminate debug session
+<leader>dR   : Restart debug session
+```
+
+### Debug Information
+
+```
+<leader>de   : Evaluate expression under cursor (normal/visual mode)
+<leader>dh   : Hover variables (float scopes window)
+<leader>dv   : View variables (Telescope)
+<leader>df   : View stack frames (Telescope)
+<leader>ds   : Debug commands (Telescope)
+<leader>dC   : Debug configurations (Telescope)
+```
+
+### Installed Debuggers (via Mason)
+
+- **Python**: debugpy
+- **C/C++/Rust**: codelldb
+- **.NET (C#/F#)**: coreclr (netcoredbg)
+- **Go**: delve
+
+---
+
+## Window Resize (bufresize.nvim)
+
+```
+<leader>w,   : Decrease width by 10 columns
+<leader>w.   : Increase width by 10 columns
+<leader>w+   : Increase height by 5 lines
+<leader>w-   : Decrease height by 5 lines
+<leader>w_   : Maximize height
+<leader>w|   : Maximize width
+<leader>wo   : Maximize both (full window)
 ```
 
 ---
