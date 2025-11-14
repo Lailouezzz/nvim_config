@@ -31,7 +31,11 @@ vim.keymap.set("n", "<leader>gb", telescope.git_branches, { desc = "Branches Git
 vim.keymap.set("n", "<leader>gc", telescope.git_commits, { desc = "Commits Git" })
 vim.keymap.set("n", "<leader>gs", telescope.git_status, { desc = "Statut Git" })
 vim.api.nvim_create_autocmd("WinClosed", {
-	callback = function()
+	callback = function(args)
+		local win = tonumber(args.match)
+		if win and vim.api.nvim_win_get_config(win).relative ~= "" then
+			return
+		end
 		require("bufresize").resize()
 		require("utils").resize_fixed()
 		require("bufresize").register()
@@ -49,4 +53,3 @@ vim.api.nvim_create_autocmd("WinResized", {
 		require("bufresize").register()
 	end,
 })
-
