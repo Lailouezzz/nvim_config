@@ -16,7 +16,16 @@ vim.keymap.set("n", "<leader>mc", function() require("utils").exec_command("./co
 vim.keymap.set("t", "<C-S-v>", "<C-\\><C-n>pi")
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 vim.keymap.set("i", "<C-BS>", "<C-w>", opts)
-vim.keymap.set("i", "<C-v>", "<C-o>P", opts)
+vim.keymap.set("i", "<C-v>", function()
+	local col = vim.fn.col('.')
+	local line_len = vim.fn.col('$')
+	
+	if col == line_len then
+		return '<C-o>p'
+	else
+		return '<C-o>P'
+	end
+end, { expr = true, silent = true })
 vim.keymap.set("n", "<leader>dg", ":Neogen<CR>", opts)
 vim.keymap.set("n", "<leader>ff", telescope.find_files, { desc = "Trouver un fichier" })
 vim.keymap.set("n", "<leader>fg", telescope.live_grep, { desc = "Recherche de texte en direct" })
