@@ -23,7 +23,7 @@ local function terminal_create_buf()
 		buf = vim.api.nvim_create_buf(false, true)
 		vim.api.nvim_buf_set_name(buf, buf_name)
 		M.terminal_buf = buf
-		vim.keymap.set('t', '<Esc>', function()
+		vim.keymap.set({ 't', 'n' }, '<Esc>', function()
 			local win = M.terminal_floating_win
 			if win and vim.api.nvim_win_is_valid(win) and vim.api.nvim_get_current_win() == win then
 				vim.api.nvim_win_close(win, false)

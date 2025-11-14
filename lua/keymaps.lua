@@ -62,3 +62,45 @@ vim.api.nvim_create_autocmd("WinResized", {
 		require("bufresize").register()
 	end,
 })
+vim.keymap.set({'n', 'i', 'v'}, '<C-Right>', function()
+	local mode = vim.fn.mode()
+	local start_line = vim.fn.line('.')
+	local col = vim.fn.col('.')
+	local line_len = vim.fn.col('$') - 1
+	if col >= line_len then
+		vim.cmd('normal! j^')
+		return
+	end
+
+	if col ~= 1 and mode == 'i' then
+		vim.cmd('normal! h')
+	elseif mode == 'i' then
+		vim.cmd('normal! k$')
+	end
+
+	vim.cmd('normal! e')
+
+	if vim.fn.line('.') ~= start_line then
+		vim.cmd('normal! k$')
+	end
+	if mode == 'i' then
+		vim.api.nvim_win_set_cursor(0, {start_line, vim.fn.col('.')})
+	end
+end)
+vim.keymap.set({'n', 'i', 'v'}, '<C-Left>', function()
+	local mode = vim.fn.mode()
+	local start_line = vim.fn.line('.')
+	local col = vim.fn.col('.')
+	if col == 1 then
+		vim.cmd('normal! k$')
+		if mode == 'i' then
+			vim.api.nvim_win_set_cursor(0, {vim.fn.line('.'), vim.fn.col('.')})
+		end
+		return
+	end
+	vim.cmd('normal! b')
+
+	if vim.fn.line('.') ~= start_line then
+		vim.cmd('normal! j^')
+	end
+end)

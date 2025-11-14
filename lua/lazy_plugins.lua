@@ -15,6 +15,10 @@ vim.opt.rtp:prepend(lazypath)
 
 plugins = {
 	{
+		'mg979/vim-visual-multi',
+		branch = 'master',
+	},
+	{
 		"danymat/neogen", 
 		dependencies = "nvim-treesitter/nvim-treesitter", 
 		config = true,
