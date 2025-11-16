@@ -4,7 +4,11 @@ local telescope = require("telescope.builtin")
 local opts = { noremap=true, silent=true }
 vim.keymap.set("n", "<leader>e", ":Neotree<CR>")
 vim.keymap.set("n", "<leader>l", ":Lazy<CR>")
-vim.keymap.set("n", "<C-s>", ":w<CR>", opts)
+local saveKeymap = "<C-s>"
+if vim.fn.has("mac") then
+	saveKeymap = "<D-s>"
+end
+vim.keymap.set("n", saveKeymap, ":w<CR>", opts)
 vim.keymap.set("n", "<leader>n", ":nohlsearch<CR>")
 vim.keymap.set("n", "<leader>tt", require("utils").toggle_terminal, opts)
 vim.keymap.set("n", "<leader>tr", require("utils").toggle_terminal_buf, opts)
@@ -13,10 +17,18 @@ vim.keymap.set("n", "<leader>mf", function() require("utils").exec_command("make
 vim.keymap.set("n", "<leader>mr", function() require("utils").exec_command("make re") end, opts)
 vim.keymap.set("n", "<leader>mp", function() require("utils").exec_command("make mrproper") end, opts)
 vim.keymap.set("n", "<leader>mc", function() require("utils").exec_command("./configure.sh") end, opts)
-vim.keymap.set("t", "<C-S-v>", "<C-\\><C-n>pi")
+local pasteTerminalKeymap = "<C-S-v"
+if vim.fn.has("mac") then
+	pasteTerminalKeymap = "<D-v>"
+end
+vim.keymap.set("t", pasteTerminalKeymap, "<C-\\><C-n>pi")
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 vim.keymap.set("i", "<C-BS>", "<C-w>", opts)
-vim.keymap.set("i", "<C-v>", function()
+local pasteKeymap = "<C-v>"
+if vim.fn.has("mac") then
+	pasteKeymap = "<D-v>"
+end
+vim.keymap.set("i", pasteKeymap, function()
 	local col = vim.fn.col('.')
 	local line_len = vim.fn.col('$')
 	
@@ -62,13 +74,24 @@ vim.api.nvim_create_autocmd("WinResized", {
 		require("bufresize").register()
 	end,
 })
-vim.keymap.set({'n', 'i', 'v'}, '<C-Right>', function()
+local rightMoveKeymap = "<C-Right>"
+if vim.fn.has("mac") then
+	rightMoveKeymap = "<A-Right>"
+end
+vim.keymap.set({'n', 'i', 'v'}, rightMoveKeymap, function()
 	local mode = vim.fn.mode()
 	local start_line = vim.fn.line('.')
 	local col = vim.fn.col('.')
 	local line_len = vim.fn.col('$') - 1
-	if col >= line_len then
+	if col >= line_len and start_line == vim.fn.line('$') then
+		vim.api.nvim_win_set_cursor(0, {vim.fn.line('.'), vim.fn.col('$')})
+		return
+	end
+	if (col >= line_len and mode ~= 'i') or (col > line_len and mode == 'i') then
 		vim.cmd('normal! j^')
+		if mode == 'i'  then
+			vim.api.nvim_win_set_cursor(0, {vim.fn.line('.'), 0})
+		end
 		return
 	end
 
@@ -84,13 +107,20 @@ vim.keymap.set({'n', 'i', 'v'}, '<C-Right>', function()
 		vim.cmd('normal! k$')
 	end
 	if mode == 'i' then
-		vim.api.nvim_win_set_cursor(0, {start_line, vim.fn.col('.')})
+		vim.api.nvim_win_set_cursor(0, {vim.fn.line('.'), vim.fn.col('.')})
 	end
 end)
-vim.keymap.set({'n', 'i', 'v'}, '<C-Left>', function()
+local leftMoveKeymap = "<C-Left>"
+if vim.fn.has("mac") then
+	leftMoveKeymap = "<A-Left>"
+end
+vim.keymap.set({'n', 'i', 'v'}, leftMoveKeymap, function()
 	local mode = vim.fn.mode()
 	local start_line = vim.fn.line('.')
 	local col = vim.fn.col('.')
+	if col == 1 and start_line == 1 then
+		return
+	end
 	if col == 1 then
 		vim.cmd('normal! k$')
 		if mode == 'i' then
@@ -102,5 +132,6 @@ vim.keymap.set({'n', 'i', 'v'}, '<C-Left>', function()
 
 	if vim.fn.line('.') ~= start_line then
 		vim.cmd('normal! j^')
+		vim.api.nvim_win_set_cursor(0, {vim.fn.line('.'), 0})
 	end
 end)

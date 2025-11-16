@@ -23,7 +23,7 @@ return {
 		},
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "clangd" },
+				ensure_installed = { "clangd", "omnisharp" },
 				automatic_enable = false,
 			})
 		end

@@ -28,3 +28,14 @@ vim.lsp.config("clangd", {
 	},
 })
 vim.lsp.enable("clangd")
+
+vim.lsp.config("omnisharp", {
+	filetypes = { "cs", "vb" },
+	capabilities = capabilities,
+	on_attach = on_attach,
+	cmd = { "omnisharp" },
+	enable_roslyn_analyzers = true,
+	enable_import_completion = true,
+	organize_imports_on_format = true,
+})
+vim.lsp.enable("omnisharp")
