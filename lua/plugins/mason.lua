@@ -3,6 +3,10 @@ return {
 		'mason-org/mason.nvim',
 		config = function()
 			require('mason').setup({
+				registries = {
+					"github:mason-org/mason-registry",
+					"github:Crashdummyy/mason-registry",
+				},
 				ui = {
 					icons = {
 						package_installed = "✓",
@@ -23,7 +27,7 @@ return {
 		},
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "clangd", "omnisharp" },
+				ensure_installed = { "clangd", "roslyn", "gopls" },
 				automatic_enable = false,
 			})
 		end

@@ -1,28 +1,66 @@
 local M = {}
 
-M.terminal_buf = nil
+M.terminal_bufs = {}
+M.terminal_curf_buf = nil
+M.terminal_curb_buf = nil
 M.terminal_floating_win = nil
 M.terminal_bottom_win = nil
 M.prev_win = nil
 
+M.config = {}
+
+local vars_path = vim.fn.stdpath("data") .. "/config.json"
+local function load_vars()
+	local f = io.open(vars_path, 'r')
+	if f then
+		local content = f:read('*all')
+		f:close()
+		return vim.json.decode(content)
+	end
+	return {
+		neotree_size = 45,
+		font_size = 10,
+		opacity = 0.95,
+	}
+end
+
+M.config = load_vars()
+
+local function save_vars(vars)
+	local f = io.open(vars_path, 'w')
+	f:write(vim.json.encode(vars))
+	f:close()
+end
+
+vim.api.nvim_create_autocmd("VimLeavePre", {
+	callback = function()
+		save_vars(M.config)
+	end
+})
+
 function M.resize_fixed()
 	local neotree_winid = vim.fn.bufwinid("neo-tree filesystem")
 	if neotree_winid ~= -1 then
-		vim.api.nvim_win_set_width(neotree_winid, 30)
+		vim.api.nvim_win_set_width(neotree_winid, M.config.neotree_size)
 	end
 	if M.terminal_bottom_win and vim.api.nvim_win_is_valid(M.terminal_bottom_win) then
 		vim.api.nvim_win_set_height(M.terminal_bottom_win, 15)
 	end
 end
 
-local function terminal_create_buf()
-	local buf_name = "custom-terminal"
+function M.resize_explorer(inc)
+	M.config.neotree_size = M.config.neotree_size + inc
+	M.resize_fixed()
+end
+
+local function terminal_create_buf(id)
+	local buf_name = "custom-terminal-" .. id
 	
-	local buf = M.terminal_buf
+	local buf = M.terminal_bufs[id]
 	if not buf or not vim.api.nvim_buf_is_valid(buf) then
 		buf = vim.api.nvim_create_buf(false, true)
 		vim.api.nvim_buf_set_name(buf, buf_name)
-		M.terminal_buf = buf
+		M.terminal_bufs[id] = buf
 		vim.keymap.set({ 't', 'n' }, '<Esc>', function()
 			local win = M.terminal_floating_win
 			if win and vim.api.nvim_win_is_valid(win) and vim.api.nvim_get_current_win() == win then
@@ -32,6 +70,25 @@ local function terminal_create_buf()
 				vim.cmd("stopinsert")
 			end)
 		end, { buffer = buf, silent = true })
+		for i = 1, 9 do
+			vim.keymap.set({'t', 'n'}, '<A-' .. i .. '>', function()
+				local new_buf = terminal_create_buf(i)
+				if M.terminal_floating_win and vim.api.nvim_win_is_valid(M.terminal_floating_win) and vim.api.nvim_get_current_win() == M.terminal_floating_win then
+					vim.api.nvim_win_set_buf(M.terminal_floating_win, new_buf)
+					M.terminal_curf_buf = i
+				end
+				if M.terminal_bottom_win and vim.api.nvim_win_is_valid(M.terminal_bottom_win) and vim.api.nvim_get_current_win() == M.terminal_bottom_win then
+					vim.api.nvim_win_set_buf(M.terminal_bottom_win, new_buf)
+					M.terminal_curb_buf = i
+				end
+				vim.api.nvim_buf_call(new_buf, function()
+					if vim.bo[new_buf].buftype ~= "terminal" then
+						vim.fn.termopen("zsh")
+					end
+				end)
+				vim.cmd("startinsert")
+			end, { buffer = buf, silent = true })
+		end
 	end
 	return buf
 end
@@ -108,7 +165,10 @@ function M.exec_command(cmd)
 end
 
 function M.toggle_terminal()
-	local buf = terminal_create_buf()
+	if not M.terminal_curf_id then
+		M.terminal_curf_id = 1
+	end
+	local buf = terminal_create_buf(M.terminal_curf_id)
 
 	if not M.terminal_floating_win or not vim.api.nvim_win_is_valid(M.terminal_floating_win) then
 		local width = vim.o.columns
@@ -145,7 +205,10 @@ function M.toggle_terminal()
 end
 
 function M.toggle_terminal_buf()
-	local buf = terminal_create_buf()
+	if not M.terminal_curb_id then
+		M.terminal_curb_id = 1
+	end
+	local buf = terminal_create_buf(M.terminal_curb_id)
 	
 	if not M.terminal_bottom_win or not vim.api.nvim_win_is_valid(M.terminal_bottom_win) then
 		M.prev_win = vim.api.nvim_get_current_win()

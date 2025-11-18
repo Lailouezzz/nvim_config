@@ -17,13 +17,17 @@ vim.keymap.set("n", "<leader>mf", function() require("utils").exec_command("make
 vim.keymap.set("n", "<leader>mr", function() require("utils").exec_command("make re") end, opts)
 vim.keymap.set("n", "<leader>mp", function() require("utils").exec_command("make mrproper") end, opts)
 vim.keymap.set("n", "<leader>mc", function() require("utils").exec_command("./configure.sh") end, opts)
-local pasteTerminalKeymap = "<C-S-v"
+local pasteTerminalKeymap = "<C-S-v>"
 if vim.fn.has("mac") then
 	pasteTerminalKeymap = "<D-v>"
 end
 vim.keymap.set("t", pasteTerminalKeymap, "<C-\\><C-n>pi")
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
-vim.keymap.set("i", "<C-BS>", "<C-w>", opts)
+local delPrevKeymap = "<C-BS>"
+if vim.fn.has("mac") then
+	delPrevKeymap = "<A-BS>"
+end
+vim.keymap.set("i", delPrevKeymap, "<C-w>", opts)
 local pasteKeymap = "<C-v>"
 if vim.fn.has("mac") then
 	pasteKeymap = "<D-v>"
@@ -51,6 +55,8 @@ vim.keymap.set("n", "<leader>km", telescope.keymaps, { desc = "Rechercher des ra
 vim.keymap.set("n", "<leader>gb", telescope.git_branches, { desc = "Branches Git" })
 vim.keymap.set("n", "<leader>gc", telescope.git_commits, { desc = "Commits Git" })
 vim.keymap.set("n", "<leader>gs", telescope.git_status, { desc = "Statut Git" })
+vim.keymap.set("n", "<leader>m=", function() require("utils").resize_explorer(5) end, opts)
+vim.keymap.set("n", "<leader>m-", function() require("utils").resize_explorer(-5) end, opts)
 vim.api.nvim_create_autocmd("WinClosed", {
 	callback = function(args)
 		local win = tonumber(args.match)

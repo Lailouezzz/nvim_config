@@ -17,6 +17,12 @@ plugins = {
 	{
 		'mg979/vim-visual-multi',
 		branch = 'master',
+		init = function()
+			vim.g.VM_maps = {
+				["Add Cursor Down"] = '<M-Down>',
+				["Add Cursor Up"] = '<M-Up>',
+			}
+		end
 	},
 	{
 		"danymat/neogen", 
@@ -126,7 +132,7 @@ plugins = {
 			local configs = require("nvim-treesitter.configs")
 
 			configs.setup({
-				ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html", "markdown"},
+				ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html", "markdown", "go", "gomod", "gowork", "gosum" },
 				sync_install = false,
 				highlight = { enable = true },
 				indent = { enable = true },
@@ -153,6 +159,7 @@ plugins = {
 	{ import = "plugins.dap" },
 	{ import = "plugins.dap-ui" },
 	{ import = "plugins.dap-extras" },
+	{ import = "plugins.roslyn" },
 	{ import = "plugins.lsp-lens" }
 }
 
