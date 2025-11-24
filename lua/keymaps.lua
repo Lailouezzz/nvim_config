@@ -1,11 +1,13 @@
 vim.opt.clipboard:append { 'unnamed', 'unnamedplus' }
 
+local is_mac = vim.loop.os_uname().sysname == "Darwin"
+
 local telescope = require("telescope.builtin")
 local opts = { noremap=true, silent=true }
 vim.keymap.set("n", "<leader>e", ":Neotree<CR>")
 vim.keymap.set("n", "<leader>l", ":Lazy<CR>")
 local saveKeymap = "<C-s>"
-if vim.fn.has("mac") then
+if is_mac then
 	saveKeymap = "<D-s>"
 end
 vim.keymap.set("n", saveKeymap, ":w<CR>", opts)
@@ -18,18 +20,18 @@ vim.keymap.set("n", "<leader>mr", function() require("utils").exec_command("make
 vim.keymap.set("n", "<leader>mp", function() require("utils").exec_command("make mrproper") end, opts)
 vim.keymap.set("n", "<leader>mc", function() require("utils").exec_command("./configure.sh") end, opts)
 local pasteTerminalKeymap = "<C-S-v>"
-if vim.fn.has("mac") then
+if is_mac then
 	pasteTerminalKeymap = "<D-v>"
 end
 vim.keymap.set("t", pasteTerminalKeymap, "<C-\\><C-n>pi")
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 local delPrevKeymap = "<C-BS>"
-if vim.fn.has("mac") then
+if is_mac then
 	delPrevKeymap = "<A-BS>"
 end
 vim.keymap.set("i", delPrevKeymap, "<C-w>", opts)
 local pasteKeymap = "<C-v>"
-if vim.fn.has("mac") then
+if is_mac then
 	pasteKeymap = "<D-v>"
 end
 vim.keymap.set("i", pasteKeymap, function()
@@ -81,7 +83,7 @@ vim.api.nvim_create_autocmd("WinResized", {
 	end,
 })
 local rightMoveKeymap = "<C-Right>"
-if vim.fn.has("mac") then
+if is_mac then
 	rightMoveKeymap = "<A-Right>"
 end
 vim.keymap.set({'n', 'i', 'v'}, rightMoveKeymap, function()
@@ -117,7 +119,7 @@ vim.keymap.set({'n', 'i', 'v'}, rightMoveKeymap, function()
 	end
 end)
 local leftMoveKeymap = "<C-Left>"
-if vim.fn.has("mac") then
+if is_mac then
 	leftMoveKeymap = "<A-Left>"
 end
 vim.keymap.set({'n', 'i', 'v'}, leftMoveKeymap, function()

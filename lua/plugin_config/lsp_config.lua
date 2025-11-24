@@ -30,7 +30,7 @@ vim.lsp.config("clangd", {
 vim.lsp.enable("clangd")
 
 local dotnet_path_env = vim.env.PATH
-if vim.fn.has("mac") then
+if vim.loop.os_uname().sysname == "Darwin" then
 	dotnet_path_env = vim.env.HOME .. '/.dotnet:' .. dotnet_path_env
 end
 vim.lsp.config("roslyn", {

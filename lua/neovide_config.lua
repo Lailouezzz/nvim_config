@@ -1,6 +1,6 @@
 local config = require("utils").config
 if vim.g.neovide then
-	if vim.fn.has("mac") then
+	if vim.loop.os_uname().sysname == "Darwin" then
 		vim.g.neovide_input_macos_option_key_is_meta = 'both'
 	end
 	local function change_font_size(offset)
