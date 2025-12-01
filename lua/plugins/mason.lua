@@ -1,3 +1,8 @@
+local function no_configurations(config)
+	config.configurations = {}
+	require('mason-nvim-dap').default_setup(config)
+end
+
 return {
 	{
 		'mason-org/mason.nvim',
@@ -68,6 +73,12 @@ return {
 						}
 						require('mason-nvim-dap').default_setup(config)
 					end,
+
+					codelldb = no_configurations,
+
+					cppdbg = no_configurations,
+
+					delve = no_configurations,
 
 					coreclr = function(config)
 						config.adapters = {

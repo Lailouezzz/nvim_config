@@ -164,11 +164,34 @@ function M.exec_command(cmd)
 	})
 end
 
-function M.toggle_terminal()
-	if not M.terminal_curf_id then
-		M.terminal_curf_id = 1
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	callback = function(args)
+		local buf = args.buf
+		local name = vim.api.nvim_buf_get_name(buf)
+		
+		if vim.bo[buf].filetype == "dapui_console" or vim.bo[buf].filetype == "dapui-repl" then
+			local win = vim.fn.bufwinid(buf)
+			vim.api.nvim_buf_attach(buf, false, {
+				on_lines = function()
+					vim.schedule(function()
+						if vim.api.nvim_win_is_valid(win) then
+							local last_line = vim.api.nvim_buf_line_count(buf)
+							vim.api.nvim_win_call(win, function()
+								vim.api.nvim_win_set_cursor(win, {last_line, 0})
+							end)
+						end
+					end)
+				end
+			})
+		end
 	end
-	local buf = terminal_create_buf(M.terminal_curf_id)
+})
+
+function M.toggle_terminal()
+	if not M.terminal_curf_buf then
+		M.terminal_curf_buf = 1
+	end
+	local buf = terminal_create_buf(M.terminal_curf_buf)
 
 	if not M.terminal_floating_win or not vim.api.nvim_win_is_valid(M.terminal_floating_win) then
 		local width = vim.o.columns
@@ -205,10 +228,10 @@ function M.toggle_terminal()
 end
 
 function M.toggle_terminal_buf()
-	if not M.terminal_curb_id then
-		M.terminal_curb_id = 1
+	if not M.terminal_curb_buf then
+		M.terminal_curb_buf = 1
 	end
-	local buf = terminal_create_buf(M.terminal_curb_id)
+	local buf = terminal_create_buf(M.terminal_curb_buf)
 	
 	if not M.terminal_bottom_win or not vim.api.nvim_win_is_valid(M.terminal_bottom_win) then
 		M.prev_win = vim.api.nvim_get_current_win()
