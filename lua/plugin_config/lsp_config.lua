@@ -50,7 +50,6 @@ vim.lsp.config("roslyn", {
 	},
 })
 vim.lsp.enable("roslyn")
-
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -75,5 +74,44 @@ vim.lsp.config("gopls", {
 	},
 })
 vim.lsp.enable("gopls")
+
+vim.lsp.config("ts_ls", {
+	on_attach = M.on_attach,
+	capabilities = M.capabilities,
+	filetypes = { "typescript", "html", "typescriptreact" },
+	root_markers = { "package.json", "tsconfig.json" },
+})
+vim.lsp.enable("ts_ls")
+
+local function get_venv_path()
+	local venv = vim.fn.finddir('venv', vim.fn.getcwd() .. ';')
+	if venv ~= '' then
+		return vim.fn.fnamemodify(venv, ':p')
+	end
+	return nil
+end
+
+vim.lsp.config("pylsp", {
+	before_init = function(_, config)
+		local venv = get_venv_path()
+		if venv then
+			config.settings.pylsp.plugins.jedi.environment = venv
+		end
+	end,
+	settings = {
+		pylsp = {
+			plugins = {
+				jedi = {},
+				pycodestyle = {
+					enabled = false,
+				},
+			},
+		},
+	},
+	on_attach = M.on_attach,
+	capabilities = M.capabilities,
+	filetypes = { "python" },
+})
+vim.lsp.enable("pylsp")
 
 return M

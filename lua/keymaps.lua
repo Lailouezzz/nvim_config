@@ -59,6 +59,7 @@ vim.keymap.set("n", "<leader>gc", telescope.git_commits, { desc = "Commits Git" 
 vim.keymap.set("n", "<leader>gs", telescope.git_status, { desc = "Statut Git" })
 vim.keymap.set("n", "<leader>m=", function() require("utils").resize_explorer(5) end, opts)
 vim.keymap.set("n", "<leader>m-", function() require("utils").resize_explorer(-5) end, opts)
+vim.keymap.set("n", "<leader>o", ":Neotree reveal<CR>", opts)
 vim.api.nvim_create_autocmd("WinClosed", {
 	callback = function(args)
 		local win = tonumber(args.match)

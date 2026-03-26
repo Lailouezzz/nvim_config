@@ -55,6 +55,7 @@ return {
 					'cppdbg',			-- Microsoft C, C++
 					'coreclr',			-- .NET (C#, F#)
 					'delve',			-- Go
+					'python-lsp-server',-- Python
 				},
 
 				handlers = {

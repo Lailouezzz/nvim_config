@@ -83,7 +83,7 @@ local function terminal_create_buf(id)
 				end
 				vim.api.nvim_buf_call(new_buf, function()
 					if vim.bo[new_buf].buftype ~= "terminal" then
-						vim.fn.termopen("zsh")
+						vim.fn.termopen("zsh -l")
 					end
 				end)
 				vim.cmd("startinsert")
@@ -131,7 +131,7 @@ function M.exec_command(cmd)
 			vim.api.nvim_buf_delete(buf, { force = true })
 		end
 	end
-	local job_id = vim.fn.termopen(cmd, {
+	local job_id = vim.fn.termopen(cmd, -i {
 		cwd = vim.fn.getcwd(),
 		on_exit = function(_, exit_code, _)
 			if exit_code == 0 then
@@ -213,7 +213,7 @@ function M.toggle_terminal()
 			border = "rounded"
 		})
 		if vim.bo[buf].buftype ~= "terminal" then
-			vim.fn.termopen("zsh")
+			vim.fn.termopen("zsh -l")
 		end
 		vim.cmd("startinsert")
 	else
@@ -240,7 +240,7 @@ function M.toggle_terminal_buf()
 		vim.api.nvim_win_set_buf(M.terminal_bottom_win, buf)
 		M.resize_fixed()
 		if vim.bo[buf].buftype ~= "terminal" then
-			vim.fn.termopen("zsh")
+			vim.fn.termopen("zsh -l")
 		end
 		vim.cmd("startinsert")
 	else
