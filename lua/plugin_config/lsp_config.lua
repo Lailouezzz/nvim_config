@@ -29,6 +29,33 @@ vim.lsp.config("clangd", {
 })
 vim.lsp.enable("clangd")
 
+vim.lsp.config("zls", {
+	on_attach = M.on_attach,
+	capabilities = M.capabilities,
+	cmd_env = {
+		ZIG_LOCAL_CACHE_DIR = "/tmp/zig-cache",
+		ZIG_GLOBAL_CACHE_DIR = "/tmp/zig-cache-global",
+	},
+	settings = {
+		zls = {
+			enable_build_on_save = true,
+			build_on_save_step = "check",
+		},
+	},
+	on_attach = function(client, bufnr)
+		if client.supports_method("textDocument/formatting") then
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				buffer = bufnr,
+				callback = function()
+					vim.lsp.buf.format({ async = false })
+				end,
+			})
+		end
+		M.on_attach(client, bufnr)
+	end,
+})
+vim.lsp.enable("zls")
+
 local dotnet_path_env = vim.env.PATH
 if vim.loop.os_uname().sysname == "Darwin" then
 	dotnet_path_env = vim.env.HOME .. '/.dotnet:' .. dotnet_path_env
