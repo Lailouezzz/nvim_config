@@ -55,7 +55,7 @@ end
 
 local function terminal_create_buf(id)
 	local buf_name = "custom-terminal-" .. id
-	
+
 	local buf = M.terminal_bufs[id]
 	if not buf or not vim.api.nvim_buf_is_valid(buf) then
 		buf = vim.api.nvim_create_buf(false, true)
@@ -71,7 +71,7 @@ local function terminal_create_buf(id)
 			end)
 		end, { buffer = buf, silent = true })
 		for i = 1, 9 do
-			vim.keymap.set({'t', 'n'}, '<A-' .. i .. '>', function()
+			vim.keymap.set({ 't', 'n' }, '<A-' .. i .. '>', function()
 				local new_buf = terminal_create_buf(i)
 				if M.terminal_floating_win and vim.api.nvim_win_is_valid(M.terminal_floating_win) and vim.api.nvim_get_current_win() == M.terminal_floating_win then
 					vim.api.nvim_win_set_buf(M.terminal_floating_win, new_buf)
@@ -83,7 +83,7 @@ local function terminal_create_buf(id)
 				end
 				vim.api.nvim_buf_call(new_buf, function()
 					if vim.bo[new_buf].buftype ~= "terminal" then
-						vim.fn.termopen("zsh -l")
+						vim.fn.jobstart("zsh -l", { term = true })
 					end
 				end)
 				vim.cmd("startinsert")
@@ -97,18 +97,17 @@ local function is_job_running(job_id)
 	if not job_id then
 		return false
 	end
-	
-	local status = vim.fn.jobwait({job_id}, 0)[1]
+	local status = vim.fn.jobwait({ job_id }, 0)[1]
 	return status == -1
 end
 
 function M.exec_command(cmd)
 	local buf = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+	vim.bo[buf].modifiable = false
 
 	local width = vim.o.columns
 	local height = vim.o.lines
-	
+
 	local win_width = math.floor(width * 0.8)
 	local win_height = math.floor(height * 0.8)
 
@@ -131,20 +130,21 @@ function M.exec_command(cmd)
 			vim.api.nvim_buf_delete(buf, { force = true })
 		end
 	end
-	local job_id = vim.fn.termopen(cmd, -i {
+	local job_id = vim.fn.jobstart(cmd, {
+		term = true,
 		cwd = vim.fn.getcwd(),
 		on_exit = function(_, exit_code, _)
 			if exit_code == 0 then
 				vim.defer_fn(close_and_delete, 500)
-				vim.api.nvim_win_set_option(win, 'winhl', 'FloatBorder:DiagnosticOk')
+				vim.wo[win].winhl = 'FloatBorder:DiagnosticOk'
 			else
 				vim.notify("Build failed (exit code: " .. exit_code .. ")", vim.log.levels.ERROR)
 				vim.keymap.set('n', '<Esc>', close_and_delete, { buffer = buf, silent = true })
-				vim.api.nvim_win_set_option(win, 'winhl', 'FloatBorder:DiagnosticError')
+				vim.wo[win].winhl = 'FloatBorder:DiagnosticError'
 			end
 		end
 	})
-	vim.api.nvim_win_set_option(win, 'winhl', 'FloatBorder:DiagnosticWarn')
+	vim.wo[win].winhl = 'FloatBorder:DiagnosticWarn'
 	vim.keymap.set('n', '<C-c>', function()
 		if is_job_running(job_id) then
 			vim.fn.chansend(job_id, '\x03')
@@ -152,12 +152,12 @@ function M.exec_command(cmd)
 				vim.fn.jobstop(job_id)
 			end, 5000)
 		end
-	end, {buffer = buf, silent = true, noremap = true})
+	end, { buffer = buf, silent = true, noremap = true })
 	vim.api.nvim_buf_attach(buf, false, {
 		on_lines = function()
 			vim.schedule(function()
 				if vim.api.nvim_win_is_valid(win) then
-					vim.api.nvim_win_set_cursor(win, {vim.api.nvim_buf_line_count(buf), 0})
+					vim.api.nvim_win_set_cursor(win, { vim.api.nvim_buf_line_count(buf), 0 })
 				end
 			end)
 		end
@@ -167,8 +167,7 @@ end
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	callback = function(args)
 		local buf = args.buf
-		local name = vim.api.nvim_buf_get_name(buf)
-		
+
 		if vim.bo[buf].filetype == "dapui_console" or vim.bo[buf].filetype == "dapui-repl" then
 			local win = vim.fn.bufwinid(buf)
 			vim.api.nvim_buf_attach(buf, false, {
@@ -177,7 +176,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 						if vim.api.nvim_win_is_valid(win) then
 							local last_line = vim.api.nvim_buf_line_count(buf)
 							vim.api.nvim_win_call(win, function()
-								vim.api.nvim_win_set_cursor(win, {last_line, 0})
+								vim.api.nvim_win_set_cursor(win, { last_line, 0 })
 							end)
 						end
 					end)
@@ -196,7 +195,7 @@ function M.toggle_terminal()
 	if not M.terminal_floating_win or not vim.api.nvim_win_is_valid(M.terminal_floating_win) then
 		local width = vim.o.columns
 		local height = vim.o.lines
-		
+
 		local win_width = math.floor(width * 0.8)
 		local win_height = math.floor(height * 0.8)
 
@@ -213,7 +212,7 @@ function M.toggle_terminal()
 			border = "rounded"
 		})
 		if vim.bo[buf].buftype ~= "terminal" then
-			vim.fn.termopen("zsh -l")
+			vim.fn.jobstart("zsh -l", { term = true })
 		end
 		vim.cmd("startinsert")
 	else
@@ -232,7 +231,7 @@ function M.toggle_terminal_buf()
 		M.terminal_curb_buf = 1
 	end
 	local buf = terminal_create_buf(M.terminal_curb_buf)
-	
+
 	if not M.terminal_bottom_win or not vim.api.nvim_win_is_valid(M.terminal_bottom_win) then
 		M.prev_win = vim.api.nvim_get_current_win()
 		vim.cmd("botright split")
@@ -240,7 +239,7 @@ function M.toggle_terminal_buf()
 		vim.api.nvim_win_set_buf(M.terminal_bottom_win, buf)
 		M.resize_fixed()
 		if vim.bo[buf].buftype ~= "terminal" then
-			vim.fn.termopen("zsh -l")
+			vim.fn.jobstart("zsh -l", { term = true })
 		end
 		vim.cmd("startinsert")
 	else

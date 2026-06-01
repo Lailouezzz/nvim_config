@@ -1,10 +1,9 @@
 vim.opt.clipboard:append { 'unnamed', 'unnamedplus' }
 
-local is_mac = vim.loop.os_uname().sysname == "Darwin"
+local is_mac = vim.uv.os_uname().sysname == "Darwin"
 
 local telescope = require("telescope.builtin")
 local opts = { noremap=true, silent=true }
-vim.keymap.set("n", "<leader>e", ":Neotree<CR>")
 vim.keymap.set("n", "<leader>l", ":Lazy<CR>")
 local saveKeymap = "<C-s>"
 if is_mac then
@@ -44,7 +43,6 @@ vim.keymap.set("i", pasteKeymap, function()
 		return '<C-o>P'
 	end
 end, { expr = true, silent = true })
-vim.keymap.set("n", "<leader>dg", ":Neogen<CR>", opts)
 vim.keymap.set("n", "<leader>ff", telescope.find_files, { desc = "Trouver un fichier" })
 vim.keymap.set("n", "<leader>fg", telescope.live_grep, { desc = "Recherche de texte en direct" })
 vim.keymap.set("n", "<leader>fb", telescope.buffers, { desc = "Basculer entre les buffers" })
@@ -59,7 +57,6 @@ vim.keymap.set("n", "<leader>gc", telescope.git_commits, { desc = "Commits Git" 
 vim.keymap.set("n", "<leader>gs", telescope.git_status, { desc = "Statut Git" })
 vim.keymap.set("n", "<leader>m=", function() require("utils").resize_explorer(5) end, opts)
 vim.keymap.set("n", "<leader>m-", function() require("utils").resize_explorer(-5) end, opts)
-vim.keymap.set("n", "<leader>o", ":Neotree reveal<CR>", opts)
 vim.api.nvim_create_autocmd("WinClosed", {
 	callback = function(args)
 		local win = tonumber(args.match)
