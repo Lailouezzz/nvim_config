@@ -63,6 +63,37 @@ return {
 					args = {},
 				},
 			}
+
+			-- Debug embarque Cortex-M via OpenOCD (sonde CMSIS-DAP / Pico debugprobe).
+			-- Prerequis : OpenOCD lance a part dans un terminal, ex.
+			--   openocd -f targets/stm32g431/openocd.cfg
+			-- et le paquet arm-none-eabi-gdb installe (sudo pacman -S arm-none-eabi-gdb).
+			-- L'adaptateur cppdbg est enregistre par mason-nvim-dap.
+			local function cortex_m(name, elf)
+				return {
+					name = name,
+					type = "cppdbg",
+					request = "launch",
+					program = "${workspaceFolder}/" .. elf,
+					cwd = "${workspaceFolder}",
+					MIMode = "gdb",
+					miDebuggerPath = "arm-none-eabi-gdb",
+					miDebuggerServerAddress = "localhost:3333",
+					externalConsole = false,
+					setupCommands = {
+						{ text = "set architecture arm" },
+						{ text = "monitor reset halt" },
+						{ text = "load" },
+					},
+				}
+			end
+
+			vim.list_extend(dap.configurations.c, {
+				cortex_m("Cortex-M OpenOCD — F103", "build/f103/blink.elf"),
+				cortex_m("Cortex-M OpenOCD — F405", "build/f405/blink.elf"),
+				cortex_m("Cortex-M OpenOCD — G431", "build/g431/blink.elf"),
+			})
+
 			dap.configurations.cpp = dap.configurations.c
 			dap.configurations.rust = dap.configurations.c
 
