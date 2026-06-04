@@ -11,19 +11,7 @@ return {
 				"go", "gomod", "gowork", "gosum", "python", "c_sharp",
 			}
 
-			local ts_ok, ts = pcall(require, "nvim-treesitter")
-			if ts_ok and type(ts.install) == "function" then
-				ts.install(parsers)
-			else
-				pcall(function()
-					require("nvim-treesitter.configs").setup({
-						ensure_installed = parsers,
-						sync_install = false,
-						highlight = { enable = true },
-						indent = { enable = true },
-					})
-				end)
-			end
+			require("nvim-treesitter").install(parsers)
 
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(args)
