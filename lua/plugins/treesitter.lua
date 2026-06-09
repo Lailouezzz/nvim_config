@@ -11,7 +11,7 @@ return {
 				"go", "gomod", "gowork", "gosum", "python", "c_sharp",
 			}
 
-			require("nvim-treesitter").install(parsers)
+			require("nvim-treesitter").setup({ ensure_installed = parsers })
 
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(args)
