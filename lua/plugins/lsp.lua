@@ -114,6 +114,7 @@ return {
 					map("n", "gr", tel.lsp_references, "Go to references")
 					map("n", "K", vim.lsp.buf.hover, "Hover docs")
 					map("n", "<leader>E", vim.diagnostic.open_float, "Diagnostics float")
+					map("n", "<leader>cl", vim.lsp.codelens.run, "Run codelens")
 					if client and client.name == "zls" and client:supports_method("textDocument/formatting") then
 						vim.api.nvim_create_autocmd("BufWritePre", {
 							buffer = buf,
@@ -122,6 +123,13 @@ return {
 					end
 					if client and client.name == "roslyn" then
 						vim.lsp.inlay_hint.enable(true, { bufnr = buf })
+					end
+					if client and client:supports_method("textDocument/codeLens") then
+						vim.lsp.codelens.refresh({ bufnr = buf })
+						vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+							buffer = buf,
+							callback = function() vim.lsp.codelens.refresh({ bufnr = buf }) end,
+						})
 					end
 				end,
 			})

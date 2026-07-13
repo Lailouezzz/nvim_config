@@ -1,13 +1,5 @@
 return {
 	{
-		"VidocqH/lsp-lens.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			require("lsp-lens").setup()
-		end,
-	},
-
-	{
 		"Diogo-ss/42-header.nvim",
 		cmd = { "Stdheader" },
 		keys = { "<F1>" },
