@@ -3,7 +3,7 @@ return {
 		"saghen/blink.cmp",
 		version = "1.*",
 		event = { "InsertEnter", "CmdlineEnter" },
-		dependencies = { "L3MON4D3/LuaSnip" },
+		dependencies = { "L3MON4D3/LuaSnip", "windwp/nvim-autopairs" },
 		config = function()
 			require("blink.cmp").setup({
 				snippets = { preset = "luasnip" },
