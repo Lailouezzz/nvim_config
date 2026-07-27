@@ -126,7 +126,7 @@ return {
 					end
 					if client and client:supports_method("textDocument/codeLens") then
 						vim.lsp.codelens.refresh({ bufnr = buf })
-						vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+						vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
 							buffer = buf,
 							callback = function() vim.lsp.codelens.refresh({ bufnr = buf }) end,
 						})
@@ -200,7 +200,7 @@ return {
 
 			vim.lsp.config("ts_ls", {
 				capabilities = caps,
-				filetypes = { "typescript", "html", "typescriptreact" },
+				filetypes = { "typescript", "html", "typescriptreact", "javascript", "javascriptreact" },
 				root_markers = { "package.json", "tsconfig.json" },
 			})
 			vim.lsp.enable("ts_ls")
