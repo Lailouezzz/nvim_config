@@ -17,12 +17,12 @@ return {
 				callback = function(args)
 					-- Roslyn gère le highlighting C# lui-même
 					if args.match == "cs" then return end
-					local ok = pcall(vim.treesitter.start, args.buf)
-					if ok then
-						pcall(function()
-							vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-						end)
-					end
+					pcall(vim.treesitter.start, args.buf)
+					-- Indentation is left to each filetype's native engine (cindent,
+					-- built-in indent/*.lua scripts, ...): nvim-treesitter's own
+					-- indentexpr mishandles common cases like a blank line freshly
+					-- opened between a matching pair of brackets.
+					-- https://github.com/nvim-treesitter/nvim-treesitter/issues/4079
 				end,
 			})
 		end,
