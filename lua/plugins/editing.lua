@@ -7,6 +7,28 @@ return {
 				["Add Cursor Down"] = "<M-Down>",
 				["Add Cursor Up"]   = "<M-Up>",
 			}
+
+			-- En sortant, VM execute les `iunmap <buffer>` de b:VM_unmaps sur les
+			-- touches qu'il s'est appropriees (<CR>, <Up>, <Down>...) : il les
+			-- supprime au lieu de les restaurer, ce qui detruit les mappings
+			-- buffer-local de blink.cmp. Blink ne les repose jamais, car son
+			-- apply.keymap_to_current_buffer sort immediatement des qu'il trouve
+			-- un mapping "blink.cmp:" survivant (<Tab>, que VM n'unmappe qu'en
+			-- mode normal). On efface donc les rescapes pour que le prochain
+			-- InsertEnter reapplique le jeu complet.
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "visual_multi_exit",
+				callback = function()
+					local buf = vim.api.nvim_get_current_buf()
+					for _, mode in ipairs({ "i", "s" }) do
+						for _, map in ipairs(vim.api.nvim_buf_get_keymap(buf, mode)) do
+							if map.desc and vim.startswith(map.desc, "blink.cmp: ") then
+								pcall(vim.api.nvim_buf_del_keymap, buf, mode, map.lhs)
+							end
+						end
+					end
+				end,
+			})
 		end,
 	},
 
