@@ -115,12 +115,6 @@ return {
 					map("n", "K", vim.lsp.buf.hover, "Hover docs")
 					map("n", "<leader>E", vim.diagnostic.open_float, "Diagnostics float")
 					map("n", "<leader>cl", vim.lsp.codelens.run, "Run codelens")
-					if client and client.name == "zls" and client:supports_method("textDocument/formatting") then
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							buffer = buf,
-							callback = function() vim.lsp.buf.format({ async = false }) end,
-						})
-					end
 					if client and client.name == "roslyn" then
 						vim.lsp.inlay_hint.enable(true, { bufnr = buf })
 					end
