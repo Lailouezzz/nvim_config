@@ -11,7 +11,25 @@ return {
 				"go", "gomod", "gowork", "gosum", "python", "c_sharp",
 			}
 
-			require("nvim-treesitter").setup({ ensure_installed = parsers })
+			local ts = require("nvim-treesitter")
+
+			-- La branche main n'a plus de `ensure_installed` : setup() ne prend
+			-- que `install_dir`. L'installation passe par install(), qui compile
+			-- via le CLI tree-sitter -- sans lui, rien ne s'installe.
+			if vim.fn.executable("tree-sitter") == 0 then
+				vim.notify(
+					"tree-sitter CLI introuvable : les parsers ne seront pas installes",
+					vim.log.levels.WARN
+				)
+			else
+				local installed = ts.get_installed("parsers")
+				local missing = vim.tbl_filter(function(parser)
+					return not vim.tbl_contains(installed, parser)
+				end, parsers)
+				if #missing > 0 then
+					ts.install(missing, { summary = true })
+				end
+			end
 
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(args)
