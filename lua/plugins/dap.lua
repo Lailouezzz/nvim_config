@@ -97,6 +97,44 @@ return {
 			dap.configurations.cpp = dap.configurations.c
 			dap.configurations.rust = dap.configurations.c
 
+			-- Zig : zig build produit du DWARF, codelldb le lit directement.
+			-- Par defaut l'executable est dans zig-out/bin/.
+			dap.configurations.zig = {
+				{
+					name = "Launch file",
+					type = "codelldb",
+					request = "launch",
+					program = function()
+						return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/zig-out/bin/", "file")
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+					args = function()
+						return vim.split(vim.fn.input("Arguments: "), " +")
+					end,
+					runInTerminal = false,
+				},
+				{
+					name = "Launch test binary",
+					type = "codelldb",
+					request = "launch",
+					program = function()
+						return vim.fn.input("Path to test binary: ", vim.fn.getcwd() .. "/zig-out/bin/", "file")
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+					args = {},
+					runInTerminal = false,
+				},
+				{
+					name = "Attach to process",
+					type = "codelldb",
+					request = "attach",
+					pid = require("dap.utils").pick_process,
+					args = {},
+				},
+			}
+
 			dap.configurations.go = {
 				{
 					type = "delve",
