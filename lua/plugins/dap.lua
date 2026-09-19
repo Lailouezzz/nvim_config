@@ -80,10 +80,18 @@ return {
 					miDebuggerPath = "arm-none-eabi-gdb",
 					miDebuggerServerAddress = "localhost:3333",
 					externalConsole = false,
+					-- program sert juste a charger les SYMBOLES (debug info) ;
+					-- on ne flashe pas (tu le fais avant de lancer OpenOCD).
+					-- stopAtConnect = true : halte la cible des la connexion,
+					-- sinon cppdbg relance la puce apres et le halt est annule.
+					stopAtConnect = true,
 					setupCommands = {
 						{ text = "set architecture arm" },
+						{ text = "set remotetimeout 20" },
+					},
+					-- tournent APRES "target remote" : reset + pause au depart.
+					postRemoteConnectCommands = {
 						{ text = "monitor reset halt" },
-						{ text = "load" },
 					},
 				}
 			end
